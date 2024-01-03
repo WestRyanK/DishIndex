@@ -77,9 +77,9 @@ internal class IngredientGroup
 
 internal class Ingredient
 {
-    private Quantity _quantity;
+    private VolumeQuantity _quantity;
 
-    public Quantity Quantity
+    public VolumeQuantity Quantity
     {
         get { return _quantity; }
         set { _quantity = value; }
@@ -100,33 +100,3 @@ internal class Ingredient
     }
 }
 
-internal struct Quantity
-{
-    private double _amount;
-
-    public double Amount
-    {
-        get => _amount;
-        set => _amount = value;
-    }
-
-    private Unit _unit;
-
-    public Unit Unit
-    {
-        get => _unit;
-        set => _unit = value;
-    }
-}
-
-internal enum Unit
-{
-    None,
-    Teaspoon,
-    Tablespoon,
-    Cup,
-    Pint,
-    Quart,
-    Gallon,
-    Item,
-}
