@@ -39,58 +39,70 @@ internal struct VolumeQuantity
 
 internal enum VolumeUnit
 {
-    [Milliliters(0)]
+    [VolumeUnit(0, SystemOfMeasurement.None)]
     None,
-    [Milliliters(1)]
+    [VolumeUnit(1, SystemOfMeasurement.Metric)]
     Milliliter,
-    [Milliliters(1000)]
+    [VolumeUnit(1000, SystemOfMeasurement.Metric)]
     Liter,
-    [Milliliters(4.9289215937)]
+    [VolumeUnit(4.9289215937, SystemOfMeasurement.US)]
     TeaspoonUS,
-    [Milliliters(14.786764781)]
+    [VolumeUnit(14.786764781, SystemOfMeasurement.US)]
     TablespoonUS,
-    [Milliliters(236.5882365)]
+    [VolumeUnit(236.5882365, SystemOfMeasurement.US)]
     CupUS,
-    [Milliliters(473.176473)]
+    [VolumeUnit(473.176473, SystemOfMeasurement.US)]
     PintUS,
-    [Milliliters(946.352946)]
+    [VolumeUnit(946.352946, SystemOfMeasurement.US)]
     QuartUS,
-    [Milliliters(3785.411784)]
+    [VolumeUnit(3785.411784, SystemOfMeasurement.US)]
     GallonUS,
 }
 
+internal enum SystemOfMeasurement
+{
+    None,
+    Metric,
+    US
+}
+
 [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
-sealed class MillilitersAttribute : Attribute
+sealed class VolumeUnitAttribute : Attribute
 {
     readonly double _milliliters;
-
-    public MillilitersAttribute(double milliliterQuantity)
-    {
-        this._milliliters = milliliterQuantity;
-    }
-
     public double Milliliters => _milliliters;
+
+    readonly SystemOfMeasurement _systemOfMeasurement;
+    public SystemOfMeasurement SystemOfMeasurement => _systemOfMeasurement;
+
+    public VolumeUnitAttribute(double milliliterQuantity, SystemOfMeasurement systemOfMeasurement)
+    {
+        _milliliters = milliliterQuantity;
+        _systemOfMeasurement = systemOfMeasurement;
+    }
 }
 
 internal static class VolumeUnitExtensions
 {
-    private static readonly ConcurrentDictionary<VolumeUnit, MillilitersAttribute> _MilliliterAttributesByVolumeUnit = new();
+    private static readonly ConcurrentDictionary<VolumeUnit, VolumeUnitAttribute> _VolumeUnitAttributesByVolumeUnit = new();
 
-    private static MillilitersAttribute MilliliterAttribute(this VolumeUnit volumeUnit)
+    private static VolumeUnitAttribute VolumeUnitAttribute(this VolumeUnit volumeUnit)
     {
-        if (_MilliliterAttributesByVolumeUnit.TryGetValue(volumeUnit, out var result))
+        if (_VolumeUnitAttributesByVolumeUnit.TryGetValue(volumeUnit, out var result))
         {
             return result;
         }
 
-        if (volumeUnit.TryGetEnumAttribute(out MillilitersAttribute? attribute))
+        if (volumeUnit.TryGetEnumAttribute(out VolumeUnitAttribute? attribute))
         {
-            _MilliliterAttributesByVolumeUnit.TryAdd(volumeUnit, attribute);
+            _VolumeUnitAttributesByVolumeUnit.TryAdd(volumeUnit, attribute);
             return attribute;
         }
 
-        throw new Exception($"Missing {nameof(MilliliterAttribute)} Attribute");
+        throw new Exception($"Missing {nameof(VolumeUnitAttribute)} Attribute");
     }
 
-    public static double Milliliters(this VolumeUnit volumeUnit) => volumeUnit.MilliliterAttribute().Milliliters;
+    public static double Milliliters(this VolumeUnit volumeUnit) => volumeUnit.VolumeUnitAttribute().Milliliters;
+
+    public static SystemOfMeasurement SystemOfMeasurement(this VolumeUnit volumeUnit) => volumeUnit.VolumeUnitAttribute().SystemOfMeasurement;
 }
