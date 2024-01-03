@@ -46,4 +46,14 @@ public class VolumeQuantityTests
 	{
 		TestConversion(1, VolumeUnit.QuartUS, 0.946352946, VolumeUnit.Liter);
 	}
+
+	[Fact]
+	public void ScaleVolumeQuantity_Test()
+	{
+		VolumeQuantity input = new(2, VolumeUnit.CupUS);
+		VolumeQuantity output = input * 5;
+
+		Assert.Equal(input.Unit, output.Unit);
+		Assert.Equal(10, output.Scalar);
+	}
 }

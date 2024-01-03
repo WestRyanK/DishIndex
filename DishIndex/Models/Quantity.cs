@@ -33,6 +33,8 @@ internal struct VolumeQuantity
         double inNewUnit = milliliters / unit.Milliliters();
         return new VolumeQuantity { Scalar = inNewUnit, Unit = unit };
     }
+
+    public static VolumeQuantity operator *(VolumeQuantity quantity, double scale) => new VolumeQuantity(quantity.Scalar * scale, quantity.Unit);
 }
 
 internal enum VolumeUnit
