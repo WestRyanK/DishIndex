@@ -21,9 +21,15 @@ internal struct VolumeQuantity
         set => _unit = value;
     }
 
-    public static VolumeQuantity ConvertTo(VolumeQuantity quantity, VolumeUnit unit)
+    public VolumeQuantity(double scalar, VolumeUnit unit)
     {
-        double milliliters = quantity.Scalar * quantity.Unit.Milliliters();
+        Scalar = scalar;
+        Unit = unit;
+    }
+
+    public VolumeQuantity ConvertTo(VolumeUnit unit)
+    {
+        double milliliters = Scalar * Unit.Milliliters();
         double inNewUnit = milliliters / unit.Milliliters();
         return new VolumeQuantity { Scalar = inNewUnit, Unit = unit };
     }
@@ -38,17 +44,17 @@ internal enum VolumeUnit
     [Milliliters(1000)]
     Liter,
     [Milliliters(4.9289215937)]
-    USTeaspoon,
+    TeaspoonUS,
     [Milliliters(14.786764781)]
-    USTablespoon,
+    TablespoonUS,
     [Milliliters(236.5882365)]
-    USCup,
+    CupUS,
     [Milliliters(473.176473)]
-    USPint,
+    PintUS,
     [Milliliters(946.352946)]
-    USQuart,
+    QuartUS,
     [Milliliters(3785.411784)]
-    USGallon,
+    GallonUS,
 }
 
 [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
