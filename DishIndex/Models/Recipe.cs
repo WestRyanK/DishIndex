@@ -11,11 +11,11 @@ internal class Recipe
         set => _name = value;
     }
 
-    private List<IngredientGroup> _ingredientGroups = new();
-    public List<IngredientGroup> IngredientGroups
+    private List<IngredientsGroup> _ingredientsGroups = new();
+    public List<IngredientsGroup> IngredientsGroups
     {
-        get => _ingredientGroups;
-        set => _ingredientGroups = value;
+        get => _ingredientsGroups;
+        set => _ingredientsGroups = value;
     }
 
     private List<InstructionsGroup> _instructionsGroups = new();
@@ -33,10 +33,10 @@ internal class Recipe
     }
 
     [JsonConstructor]
-    public Recipe(string name, List<IngredientGroup> ingredientGroups, List<InstructionsGroup> instructionsGroups, List<string>? tips = null)
+    public Recipe(string name, List<IngredientsGroup> ingredientsGroups, List<InstructionsGroup> instructionsGroups, List<string>? tips = null)
     {
         _name = name;
-        _ingredientGroups = ingredientGroups;
+        _ingredientsGroups = ingredientsGroups;
         _instructionsGroups = instructionsGroups;
         _tips = tips ?? new();
     }
@@ -44,7 +44,7 @@ internal class Recipe
     public Recipe(string name, List<Ingredient> ingredients, List<InstructionStep> instructions, List<string>? tips = null)
     {
         _name = name;
-        _ingredientGroups = [new IngredientGroup(ingredients: ingredients)];
+        _ingredientsGroups = [new IngredientsGroup(ingredients: ingredients)];
         _instructionsGroups = [new InstructionsGroup(steps: instructions)];
         _tips = tips ?? new();
     }
@@ -91,7 +91,7 @@ internal class InstructionStep
     }
 }
 
-internal class IngredientGroup
+internal class IngredientsGroup
 {
     private string? _groupName;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -109,7 +109,7 @@ internal class IngredientGroup
     }
 
     [JsonConstructor]
-    public IngredientGroup(string? groupName = null, List<Ingredient>? ingredients = null)
+    public IngredientsGroup(string? groupName = null, List<Ingredient>? ingredients = null)
     {
         _groupName = groupName;
         _ingredients = ingredients ?? new();

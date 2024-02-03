@@ -17,11 +17,11 @@ public class SerializationTests
 	{
 		Recipe recipe = new(RecipeData.RecipeName,
 			[
-				new IngredientGroup(RecipeData.IngredientGroupOutsideName,
+				new IngredientsGroup(RecipeData.IngredientsGroupOutsideName,
 				[
 					RecipeData.IngredientBread,
 				]),
-				new IngredientGroup(RecipeData.IngredientGroupFillingName,
+				new IngredientsGroup(RecipeData.IngredientsGroupFillingName,
 				[
 					RecipeData.IngredientPeanutButter,
 					RecipeData.IngredientJelly
@@ -48,19 +48,19 @@ public class SerializationTests
 		Recipe back = JsonSerializer.Deserialize<Recipe>(serialized)!;
 
 		Assert.Equal(RecipeData.RecipeName, back.Name);
-		Assert.Equal(2, back.IngredientGroups.Count);
-		Assert.Equal(RecipeData.IngredientGroupOutsideName, back.IngredientGroups[0].GroupName);
-		Assert.Equal(RecipeData.IngredientGroupFillingName, back.IngredientGroups[1].GroupName);
+		Assert.Equal(2, back.IngredientsGroups.Count);
+		Assert.Equal(RecipeData.IngredientsGroupOutsideName, back.IngredientsGroups[0].GroupName);
+		Assert.Equal(RecipeData.IngredientsGroupFillingName, back.IngredientsGroups[1].GroupName);
 		Assert.Equal(2, back.InstructionsGroups.Count);
 		Assert.Equal(RecipeData.InstructionsGroupComplicatedName, back.InstructionsGroups[0].GroupName);
 		Assert.Equal(RecipeData.InstructionsGroupEasyName, back.InstructionsGroups[1].GroupName);
 		Assert.Equal(1, back.Tips.Count);
 		Assert.Equal(RecipeData.TipBanana, back.Tips[0]);
 
-		Assert.Equal(1, back.IngredientGroups[0].Ingredients.Count);
-		Assert.Equal(2, back.IngredientGroups[1].Ingredients.Count);
+		Assert.Equal(1, back.IngredientsGroups[0].Ingredients.Count);
+		Assert.Equal(2, back.IngredientsGroups[1].Ingredients.Count);
 
-		Assert.Equal(recipe.IngredientGroups[0].Ingredients[0].Instruction, back.IngredientGroups[0].Ingredients[0].Instruction);
+		Assert.Equal(recipe.IngredientsGroups[0].Ingredients[0].Instruction, back.IngredientsGroups[0].Ingredients[0].Instruction);
 	}
 
 	[Fact]
@@ -128,14 +128,14 @@ public class SerializationTests
 	[Fact]
 	public void IngredientsGroupSerialization_Test()
 	{
-		IngredientGroup group = new IngredientGroup(RecipeData.IngredientGroupFillingName,
+		IngredientsGroup group = new IngredientsGroup(RecipeData.IngredientsGroupFillingName,
 			[
 				RecipeData.IngredientPeanutButter,
 				RecipeData.IngredientJelly,
 			]);
 
 		string serialized = JsonSerializer.Serialize(group, _SerializerOptions);
-		IngredientGroup back = JsonSerializer.Deserialize<IngredientGroup>(serialized)!;
+		IngredientsGroup back = JsonSerializer.Deserialize<IngredientsGroup>(serialized)!;
 
 		Assert.Equal(group.GroupName, group.GroupName);
 		Assert.Equal(2, group.Ingredients.Count);
@@ -145,15 +145,15 @@ public class SerializationTests
 	[Fact]
 	public void IngredientsGroupSerialization_NoName_Test()
 	{
-		IngredientGroup group = new IngredientGroup(ingredients: [
+		IngredientsGroup group = new IngredientsGroup(ingredients: [
 				RecipeData.IngredientPeanutButter,
 				RecipeData.IngredientJelly,
 			]);
 
 		string serialized = JsonSerializer.Serialize(group, _SerializerOptions);
-		IngredientGroup back = JsonSerializer.Deserialize<IngredientGroup>(serialized)!;
+		IngredientsGroup back = JsonSerializer.Deserialize<IngredientsGroup>(serialized)!;
 
-		Assert.DoesNotContain(nameof(IngredientGroup.GroupName), serialized);
+		Assert.DoesNotContain(nameof(IngredientsGroup.GroupName), serialized);
 		Assert.Null(group.GroupName);
 		Assert.Equal(2, group.Ingredients.Count);
 		Assert.Equal(group.Ingredients[0].Name, group.Ingredients[0].Name);

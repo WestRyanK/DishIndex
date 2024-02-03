@@ -14,9 +14,9 @@ internal class RecipeData
 	public static readonly string InstructionsGroupComplicatedName = "Complicated Instructions";
 	public static readonly string InstructionsGroupEasyName = "Easy Instructions";
 
-	public static readonly string IngredientGroupDefaultName = "Ingredients";
-	public static readonly string IngredientGroupFillingName = "Filling Ingredients";
-	public static readonly string IngredientGroupOutsideName = "Outside Ingredients";
+	public static readonly string IngredientsGroupDefaultName = "Ingredients";
+	public static readonly string IngredientsGroupFillingName = "Filling Ingredients";
+	public static readonly string IngredientsGroupOutsideName = "Outside Ingredients";
 
 	public static readonly string IngredientNamePeanutButter = "Peanut Butter";
 	public static readonly string IngredientNameJelly = "Grape Jelly";

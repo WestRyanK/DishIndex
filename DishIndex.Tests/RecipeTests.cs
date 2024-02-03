@@ -77,24 +77,24 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void IngredientGroupConstructor_CustomName_Test()
+	public void IngredientsGroupConstructor_CustomName_Test()
 	{
-		IngredientGroup group = new(RecipeData.IngredientGroupFillingName,
+		IngredientsGroup group = new(RecipeData.IngredientsGroupFillingName,
 			[
 				RecipeData.IngredientPeanutButter,
 				RecipeData.IngredientJelly
 			]);
 
-		Assert.Equal(RecipeData.IngredientGroupFillingName, group.GroupName);
+		Assert.Equal(RecipeData.IngredientsGroupFillingName, group.GroupName);
 		Assert.Equal(2, group.Ingredients.Count);
 		Assert.Equal(RecipeData.IngredientNamePeanutButter, group.Ingredients[0].Name);
 		Assert.Equal(RecipeData.IngredientNameJelly, group.Ingredients[1].Name);
 	}
 
 	[Fact]
-	public void IngredientGroupConstructor_DefaultName_Test()
+	public void IngredientsGroupConstructor_DefaultName_Test()
 	{
-		IngredientGroup group = new(ingredients:
+		IngredientsGroup group = new(ingredients:
 			[
 				RecipeData.IngredientPeanutButter,
 				RecipeData.IngredientJelly
@@ -107,9 +107,9 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void IngredientGroupConstructor_EmptyConstructor_Test()
+	public void IngredientsGroupConstructor_EmptyConstructor_Test()
 	{
-		IngredientGroup group = new();
+		IngredientsGroup group = new();
 
 		Assert.Null(group.GroupName);
 		Assert.NotNull(group.Ingredients);
@@ -121,11 +121,11 @@ public class RecipeTests
 	{
 		Recipe recipe = new(RecipeData.RecipeName,
 			[
-				new IngredientGroup(RecipeData.IngredientGroupOutsideName,
+				new IngredientsGroup(RecipeData.IngredientsGroupOutsideName,
 				[
 					RecipeData.IngredientBread,
 				]),
-				new IngredientGroup(RecipeData.IngredientGroupFillingName,
+				new IngredientsGroup(RecipeData.IngredientsGroupFillingName,
 				[
 					RecipeData.IngredientPeanutButter,
 					RecipeData.IngredientJelly
@@ -150,9 +150,9 @@ public class RecipeTests
 
 		Assert.Equal(RecipeData.RecipeName, recipe.Name);
 		Assert.Equal(2, recipe.InstructionsGroups.Count);
-		Assert.Equal(RecipeData.IngredientGroupOutsideName, recipe.IngredientGroups[0].GroupName);
-		Assert.Equal(RecipeData.IngredientGroupFillingName, recipe.IngredientGroups[1].GroupName);
-		Assert.Equal(2, recipe.IngredientGroups.Count);
+		Assert.Equal(RecipeData.IngredientsGroupOutsideName, recipe.IngredientsGroups[0].GroupName);
+		Assert.Equal(RecipeData.IngredientsGroupFillingName, recipe.IngredientsGroups[1].GroupName);
+		Assert.Equal(2, recipe.IngredientsGroups.Count);
 		Assert.Equal(RecipeData.InstructionsGroupComplicatedName, recipe.InstructionsGroups[0].GroupName);
 		Assert.Equal(RecipeData.InstructionsGroupEasyName, recipe.InstructionsGroups[1].GroupName);
 		Assert.Equal(1, recipe.Tips.Count);
@@ -177,8 +177,8 @@ public class RecipeTests
 
 		Assert.Equal(RecipeData.RecipeName, recipe.Name);
 		Assert.Equal(1, recipe.InstructionsGroups.Count);
-		Assert.Null(recipe.IngredientGroups[0].GroupName);
-		Assert.Equal(1, recipe.IngredientGroups.Count);
+		Assert.Null(recipe.IngredientsGroups[0].GroupName);
+		Assert.Equal(1, recipe.IngredientsGroups.Count);
 		Assert.Null(recipe.InstructionsGroups[0].GroupName);
 		Assert.Empty(recipe.Tips);
 	}

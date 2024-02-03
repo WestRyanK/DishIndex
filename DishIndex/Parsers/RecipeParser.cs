@@ -24,7 +24,6 @@ internal class RecipeParser
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-
 		return null;
 	}
 
