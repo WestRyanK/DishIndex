@@ -6,14 +6,14 @@ namespace DishIndex.Tests;
 public class RecipeTests
 {
 	[Fact]
-	public void TestInstructionStepConstructor()
+	public void InstructionStepConstructor_Test()
 	{
 		InstructionStep step = new(RecipeData.StepStringPeanutButter);
 		Assert.Equal(RecipeData.StepStringPeanutButter, step.Instructions);
 	}
 
 	[Fact]
-	public void TestInstructionGroupConstructor_CustomName()
+	public void InstructionGroupConstructor_CustomName_Test()
 	{
 		InstructionsGroup group = new(RecipeData.InstructionsGroupComplicatedName,
 			[
@@ -28,7 +28,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestInstructionGroupConstructor_DefaultName()
+	public void InstructionGroupConstructor_DefaultName_Test()
 	{
 		InstructionsGroup group = new(steps: [
 				new InstructionStep(RecipeData.StepStringPlate),
@@ -42,7 +42,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestInstructionGroupConstructor_EmptyConstructor()
+	public void InstructionGroupConstructor_EmptyConstructor_Test()
 	{
 		InstructionsGroup group = new();
 
@@ -52,7 +52,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestIngredientConstructor()
+	public void IngredientConstructor_Test()
 	{
 		Ingredient ingredient = new(
 			RecipeData.IngredientNamePeanutButter,
@@ -65,7 +65,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestIngredientConstructor_NoInstruction()
+	public void IngredientConstructor_NoInstruction_Test()
 	{
 		Ingredient ingredient = new(
 			RecipeData.IngredientNameJelly,
@@ -77,7 +77,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestIngredientGroupConstructor_CustomName()
+	public void IngredientGroupConstructor_CustomName_Test()
 	{
 		IngredientGroup group = new(RecipeData.IngredientGroupFillingName,
 			[
@@ -92,7 +92,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestIngredientGroupConstructor_DefaultName()
+	public void IngredientGroupConstructor_DefaultName_Test()
 	{
 		IngredientGroup group = new(ingredients:
 			[
@@ -107,7 +107,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestIngredientGroupConstructor_EmptyConstructor()
+	public void IngredientGroupConstructor_EmptyConstructor_Test()
 	{
 		IngredientGroup group = new();
 
@@ -117,7 +117,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestRecipeConstructor()
+	public void RecipeConstructor_Test()
 	{
 		Recipe recipe = new(RecipeData.RecipeName,
 			[
@@ -160,7 +160,7 @@ public class RecipeTests
 	}
 
 	[Fact]
-	public void TestRecipeConstructor_SingleGroup()
+	public void RecipeConstructor_SingleGroup_Test()
 	{
 		Recipe recipe = new(RecipeData.RecipeName,
 			[

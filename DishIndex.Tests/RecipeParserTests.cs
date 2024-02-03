@@ -29,7 +29,7 @@ public class RecipeParserTests
 	private static readonly IList<string> RecipeWithTipsLines = [.. RecipeNoTipsLines, .. TipsLines];
 
 
-	private void TestSection(IEnumerable<string> result, int expectedCount, int expectedFirst, int expectedLast)
+	private void TestGetSection(IEnumerable<string> result, int expectedCount, int expectedFirst, int expectedLast)
 	{
 		Assert.Equal(expectedCount, result.Count());
 		Assert.Equal(expectedFirst.ToString(), result.First());
@@ -37,11 +37,11 @@ public class RecipeParserTests
 	}
 
 	[Fact]
-	public void TestGetSection()
+	public void GetSection_Test()
 	{
 		IList<string> input = Enumerable.Range(0, 10).Select(x => x.ToString()).ToList();
-		TestSection(RecipeParser.GetSection(input, 0, 10), 10, 0, 9);
-		TestSection(RecipeParser.GetSection(input, 1, 5), 4, 1, 4);
+		TestGetSection(RecipeParser.GetSection(input, 0, 10), 10, 0, 9);
+		TestGetSection(RecipeParser.GetSection(input, 1, 5), 4, 1, 4);
 	}
 
 	private void TestRecipeSection(IEnumerable<string> actual, int expectedCount, int expectedFirstIndex, int expectedLastIndex)
@@ -52,7 +52,7 @@ public class RecipeParserTests
 	}
 
 	[Fact]
-	public void TestGetRecipeSections()
+	public void GetRecipeSections_Test()
 	{
 		RecipeParser.GetRecipeSections(
 			RecipeWithTipsLines,
@@ -68,7 +68,7 @@ public class RecipeParserTests
 	}
 
 	[Fact]
-	public void TestGetRecipeSections_NoTips()
+	public void GetRecipeSections_NoTips_Test()
 	{
 		RecipeParser.GetRecipeSections(
 			RecipeNoTipsLines,

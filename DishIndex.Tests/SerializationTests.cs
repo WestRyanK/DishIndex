@@ -13,7 +13,7 @@ public class SerializationTests
 	};
 
 	[Fact]
-	public void TestRecipeSerialization()
+	public void RecipeSerialization_Test()
 	{
 		Recipe recipe = new(RecipeData.RecipeName,
 			[
@@ -64,14 +64,14 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestVolumeQuantityUnitSerialization()
+	public void VolumeQuantityUnitSerialization_Test()
 	{
 		string serialized = JsonSerializer.Serialize(RecipeData.QuantityJelly, _SerializerOptions);
 		Assert.Contains(RecipeData.QuantityJelly.Unit.ToString(), serialized);
 	}
 
 	[Fact]
-	public void TestVolumeQuantitySerialization()
+	public void VolumeQuantitySerialization_Test()
 	{
 		string serialized = JsonSerializer.Serialize(RecipeData.QuantityJelly, _SerializerOptions);
 		VolumeQuantity back = JsonSerializer.Deserialize<VolumeQuantity>(serialized)!;
@@ -95,7 +95,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestIngredientSerialization()
+	public void IngredientSerialization_Test()
 	{
 		string serialized = JsonSerializer.Serialize(RecipeData.IngredientPeanutButter, _SerializerOptions);
 		Ingredient back = JsonSerializer.Deserialize<Ingredient>(serialized)!;
@@ -106,7 +106,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestIngredientSerialization_NoInstruction()
+	public void IngredientSerialization_NoInstruction_Test()
 	{
 		string serialized = JsonSerializer.Serialize(RecipeData.IngredientJelly, _SerializerOptions);
 		Ingredient back = JsonSerializer.Deserialize<Ingredient>(serialized)!;
@@ -117,7 +117,7 @@ public class SerializationTests
 		Assert.Equal(RecipeData.IngredientJelly.Quantity.Scalar, back.Quantity.Scalar); }
 
 	[Fact]
-	public void TestInstructionsSerialization()
+	public void InstructionsSerialization_Test()
 	{
 		string serialized = JsonSerializer.Serialize(RecipeData.InstructionEasy, _SerializerOptions);
 		InstructionStep back = JsonSerializer.Deserialize<InstructionStep>(serialized)!;
@@ -126,7 +126,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestIngredientsGroupSerialization()
+	public void IngredientsGroupSerialization_Test()
 	{
 		IngredientGroup group = new IngredientGroup(RecipeData.IngredientGroupFillingName,
 			[
@@ -143,7 +143,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestIngredientsGroupSerialization_NoName()
+	public void IngredientsGroupSerialization_NoName_Test()
 	{
 		IngredientGroup group = new IngredientGroup(ingredients: [
 				RecipeData.IngredientPeanutButter,
@@ -160,7 +160,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestInstructionsGroupSerialization()
+	public void InstructionsGroupSerialization_Test()
 	{
 		InstructionsGroup group = new InstructionsGroup(RecipeData.InstructionsGroupComplicatedName,
 			[
@@ -178,7 +178,7 @@ public class SerializationTests
 	}
 
 	[Fact]
-	public void TestInstructionsGroupSerialization_NoName()
+	public void InstructionsGroupSerialization_NoName_Test()
 	{
 		InstructionsGroup group = new InstructionsGroup(steps: [
 				RecipeData.InstructionPlate,
