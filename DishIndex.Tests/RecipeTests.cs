@@ -2,6 +2,7 @@
 
 namespace DishIndex.Tests;
 
+#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
 public class RecipeTests
 {
 	[Fact]
@@ -34,7 +35,7 @@ public class RecipeTests
 			new InstructionStep(RecipeData.StepStringPeanutButter),
 		]);
 
-		Assert.Equal(RecipeData.InstructionsGroupDefaultName, group.GroupName);
+		Assert.Null(group.GroupName);
 		Assert.Equal(2, group.Steps.Count);
 		Assert.Equal(RecipeData.StepStringPlate, group.Steps[0].Instructions);
 		Assert.Equal(RecipeData.StepStringPeanutButter, group.Steps[1].Instructions);
@@ -45,7 +46,7 @@ public class RecipeTests
 	{
 		InstructionsGroup group = new();
 
-		Assert.Equal(RecipeData.InstructionsGroupDefaultName, group.GroupName);
+		Assert.Null(group.GroupName);
 		Assert.NotNull(group.Steps);
 		Assert.Empty(group.Steps);
 	}
@@ -99,7 +100,7 @@ public class RecipeTests
 				RecipeData.IngredientJelly
 			]);
 
-		Assert.Equal(RecipeData.IngredientGroupDefaultName, group.GroupName);
+		Assert.Null(group.GroupName);
 		Assert.Equal(2, group.Ingredients.Count);
 		Assert.Equal(RecipeData.IngredientNamePeanutButter, group.Ingredients[0].Name);
 		Assert.Equal(RecipeData.IngredientNameJelly, group.Ingredients[1].Name);
@@ -110,7 +111,7 @@ public class RecipeTests
 	{
 		IngredientGroup group = new();
 
-		Assert.Equal(RecipeData.IngredientGroupDefaultName, group.GroupName);
+		Assert.Null(group.GroupName);
 		Assert.NotNull(group.Ingredients);
 		Assert.Empty(group.Ingredients);
 	}
@@ -154,7 +155,7 @@ public class RecipeTests
 		Assert.Equal(2, recipe.IngredientGroups.Count);
 		Assert.Equal(RecipeData.InstructionsGroupComplicatedName, recipe.InstructionsGroups[0].GroupName);
 		Assert.Equal(RecipeData.InstructionsGroupEasyName, recipe.InstructionsGroups[1].GroupName);
-		Assert.Single(recipe.Tips);
+		Assert.Equal(1, recipe.Tips.Count);
 		Assert.Equal(RecipeData.TipBanana, recipe.Tips[0]);
 	}
 
@@ -175,10 +176,11 @@ public class RecipeTests
 			]);
 
 		Assert.Equal(RecipeData.RecipeName, recipe.Name);
-		Assert.Single(recipe.InstructionsGroups);
-		Assert.Equal(RecipeData.IngredientGroupDefaultName, recipe.IngredientGroups[0].GroupName);
-		Assert.Single(recipe.IngredientGroups);
-		Assert.Equal(RecipeData.InstructionsGroupDefaultName, recipe.InstructionsGroups[0].GroupName);
+		Assert.Equal(1, recipe.InstructionsGroups.Count);
+		Assert.Null(recipe.IngredientGroups[0].GroupName);
+		Assert.Equal(1, recipe.IngredientGroups.Count);
+		Assert.Null(recipe.InstructionsGroups[0].GroupName);
 		Assert.Empty(recipe.Tips);
 	}
 }
+#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.

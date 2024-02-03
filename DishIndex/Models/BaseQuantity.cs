@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DishIndex.Models;
@@ -18,6 +19,7 @@ internal abstract class BaseQuantity<Q, U>
 	where U : struct, Enum
 {
 	public double Scalar { get; set; }
+	[JsonConverter(typeof(JsonStringEnumConverter))]
 	public U Unit { get; set; }
 
 	public Q ConvertTo(U unit)

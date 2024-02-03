@@ -1,9 +1,11 @@
-﻿namespace DishIndex.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace DishIndex.Models;
 
 internal class Recipe
 {
-    private string? _name;
-    public string? Name
+    private string _name;
+    public string Name
     {
         get => _name;
         set => _name = value;
@@ -30,6 +32,7 @@ internal class Recipe
         set => _tips = value;
     }
 
+    [JsonConstructor]
     public Recipe(string name, List<IngredientGroup> ingredientGroups, List<InstructionsGroup> instructionsGroups, List<string>? tips = null)
     {
         _name = name;
@@ -49,7 +52,8 @@ internal class Recipe
 
 internal class InstructionsGroup
 {
-    private string? _groupName = "Instructions";
+    private string? _groupName;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? GroupName
     {
         get => _groupName;
@@ -63,7 +67,8 @@ internal class InstructionsGroup
         set => _steps = value;
     }
 
-    public InstructionsGroup(string groupName = "Instructions", List<InstructionStep>? steps = null)
+    [JsonConstructor]
+    public InstructionsGroup(string? groupName = null, List<InstructionStep>? steps = null)
     {
         _groupName = groupName;
         _steps = steps ?? new();
@@ -79,6 +84,7 @@ internal class InstructionStep
         set => _instructions = value;
     }
 
+    [JsonConstructor]
     public InstructionStep(string instructions)
     {
         _instructions = instructions;
@@ -87,7 +93,8 @@ internal class InstructionStep
 
 internal class IngredientGroup
 {
-    private string? _groupName = "Ingredients";
+    private string? _groupName;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? GroupName
     {
         get => _groupName;
@@ -101,7 +108,8 @@ internal class IngredientGroup
         set => _ingredients = value;
     }
 
-    public IngredientGroup(string groupName = "Ingredients", List<Ingredient>? ingredients = null)
+    [JsonConstructor]
+    public IngredientGroup(string? groupName = null, List<Ingredient>? ingredients = null)
     {
         _groupName = groupName;
         _ingredients = ingredients ?? new();
@@ -118,20 +126,22 @@ internal class Ingredient
         set { _quantity = value; }
     }
 
-    private string? _name;
-    public string? Name
+    private string _name;
+    public string Name
     {
         get => _name;
         set => _name = value;
     }
 
     private string? _instruction;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Instruction
     {
         get => _instruction;
         set => _instruction = value;
     }
 
+    [JsonConstructor]
     public Ingredient(string name, VolumeQuantity quantity, string? instruction = null)
     {
         _name = name;
