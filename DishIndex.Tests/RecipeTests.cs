@@ -2,7 +2,6 @@
 
 namespace DishIndex.Tests;
 
-#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
 public class RecipeTests
 {
 	[Fact]
@@ -183,4 +182,3 @@ public class RecipeTests
 		Assert.Empty(recipe.Tips);
 	}
 }
-#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.

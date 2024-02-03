@@ -3,7 +3,6 @@ using System.Text.Json;
 
 namespace DishIndex.Tests;
 
-#pragma warning disable xUnit2013 // Do not use equality check to check for collection size.
 public class SerializationTests
 {
 	private static readonly JsonSerializerOptions _SerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.General)
@@ -195,4 +194,3 @@ public class SerializationTests
 		Assert.Equal(group.Steps[0].Instructions, group.Steps[0].Instructions);
 	}
 }
-#pragma warning restore xUnit2013 // Do not use equality check to check for collection size.
