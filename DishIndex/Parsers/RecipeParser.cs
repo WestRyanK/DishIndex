@@ -24,7 +24,38 @@ internal class RecipeParser
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-		return null;
+		IngredientsGroup ingredientsGroup = ParseIngredientsGroup(ingredientsSection);
+		InstructionsGroup instructionsGroup = ParseInstructionsGroup(instructionsSection);
+		List<string> tips = ParseTips(tipsSection);
+
+		Recipe recipe = new Recipe(recipeName, [ingredientsGroup], [instructionsGroup], tips);
+		return recipe;
+	}
+
+	internal static InstructionsGroup ParseInstructionsGroup(IEnumerable<string> section)
+	{
+		var instructions = section.Skip(1).Select(line => new InstructionStep(line)).ToList();
+		InstructionsGroup group = new InstructionsGroup(section.First(), instructions);
+		return group;
+	}
+
+	internal static IngredientsGroup ParseIngredientsGroup(IEnumerable<string> ingredientsSection)
+	{
+		List<Ingredient> ingredients = ingredientsSection.Skip(1).Select(ParseIngredient).ToList();
+		IngredientsGroup group = new IngredientsGroup(ingredientsSection.First(), ingredients);
+		return group;
+	}
+
+	internal static Ingredient ParseIngredient(string line)
+	{
+		Ingredient ingredient = new Ingredient(line, null, null);
+		return ingredient;
+	}
+
+	internal static List<string> ParseTips(IEnumerable<string>? tipsSection)
+	{
+		List<string> tips = tipsSection?.Skip(1)?.ToList() ?? new();
+		return tips;
 	}
 
 	internal static void GetRecipeSections(IList<string> recipeLines,

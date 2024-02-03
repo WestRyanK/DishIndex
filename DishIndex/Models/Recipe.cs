@@ -118,9 +118,9 @@ internal class IngredientsGroup
 
 internal class Ingredient
 {
-    private VolumeQuantity _quantity;
+    private VolumeQuantity? _quantity;
 
-    public VolumeQuantity Quantity
+    public VolumeQuantity? Quantity
     {
         get { return _quantity; }
         set { _quantity = value; }
@@ -142,7 +142,7 @@ internal class Ingredient
     }
 
     [JsonConstructor]
-    public Ingredient(string name, VolumeQuantity quantity, string? instruction = null)
+    public Ingredient(string name, VolumeQuantity? quantity, string? instruction = null)
     {
         _name = name;
         _quantity = quantity;
