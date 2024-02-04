@@ -1,5 +1,6 @@
 ﻿using DishIndex.Utilities;
-using System.Text.Json.Serialization;
+using S = System.Text.Json.Serialization;
+using N = Newtonsoft.Json;
 
 namespace DishIndex.Models;
 
@@ -33,7 +34,8 @@ public class Recipe
 		set => _tips = value;
 	}
 
-	[JsonConstructor]
+	[S.JsonConstructor]
+	[N.JsonConstructor]
 	public Recipe(string name, List<IngredientsGroup> ingredientsGroups, List<InstructionsGroup> instructionsGroups, List<string>? tips = null)
 	{
 		_name = name;
@@ -68,7 +70,7 @@ public class Recipe
 public class InstructionsGroup
 {
 	private string? _groupName;
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
 	public string? GroupName
 	{
 		get => _groupName;
@@ -82,7 +84,8 @@ public class InstructionsGroup
 		set => _steps = value;
 	}
 
-	[JsonConstructor]
+	[S.JsonConstructor]
+	[N.JsonConstructor]
 	public InstructionsGroup(string? groupName = null, List<InstructionStep>? steps = null)
 	{
 		_groupName = groupName;
@@ -111,7 +114,8 @@ public class InstructionStep
 		set => _instructions = value;
 	}
 
-	[JsonConstructor]
+	[S.JsonConstructor]
+	[N.JsonConstructor]
 	public InstructionStep(string instructions)
 	{
 		_instructions = instructions;
@@ -131,7 +135,7 @@ public class InstructionStep
 public class IngredientsGroup
 {
 	private string? _groupName;
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
 	public string? GroupName
 	{
 		get => _groupName;
@@ -145,7 +149,8 @@ public class IngredientsGroup
 		set => _ingredients = value;
 	}
 
-	[JsonConstructor]
+	[S.JsonConstructor]
+	[N.JsonConstructor]
 	public IngredientsGroup(string? groupName = null, List<Ingredient>? ingredients = null)
 	{
 		_groupName = groupName;
@@ -183,14 +188,15 @@ public class Ingredient
 	}
 
 	private string? _instruction;
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
 	public string? Instruction
 	{
 		get => _instruction;
 		set => _instruction = value;
 	}
 
-	[JsonConstructor]
+	[S.JsonConstructor]
+	[N.JsonConstructor]
 	public Ingredient(string name, VolumeQuantity? quantity, string? instruction = null)
 	{
 		_name = name;

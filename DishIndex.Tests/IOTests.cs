@@ -5,7 +5,7 @@ namespace DishIndex.Tests;
 public class IOTests
 {
 	[Fact]
-	public async Task JsonExportImport_Test()
+	public void JsonExportImport_Test()
 	{
 		const string path = "recipe.json";
 		File.Delete(path);
@@ -23,11 +23,11 @@ public class IOTests
 				RecipeData.InstructionTogether,
 			]);
 
-		await JsonRecipeIO.Export(recipe, path);
+		JsonRecipeIO.Export(recipe, path);
 
 		Assert.True(File.Exists(path));
 
-		Recipe back = await JsonRecipeIO.Import(path);
+		Recipe back = JsonRecipeIO.Import(path);
 
 		Assert.Equal(recipe.Name, back.Name);
 		File.Delete(path);
