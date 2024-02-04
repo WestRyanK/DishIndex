@@ -13,7 +13,7 @@ internal class RecipeParser
 	internal static readonly string[] TipHeaders = ["Tip", "Memories"];
 	public static Recipe Parse(string recipeText)
 	{
-		string[] recipeLines = recipeText.Split(["\r\n", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+		string[] recipeLines = GetRecipeLines(recipeText);
 		if (recipeLines.Length <= 3)
 		{
 			throw new FormatException("Empty Recipe");
@@ -32,6 +32,11 @@ internal class RecipeParser
 
 		Recipe recipe = new Recipe(recipeName, [ingredientsGroup], [instructionsGroup], tips);
 		return recipe;
+	}
+
+	internal static string[] GetRecipeLines(string recipeText)
+	{
+		return recipeText.Split(["\r\n", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 	}
 
 	internal static InstructionsGroup ParseInstructionsGroup(IEnumerable<string> section)

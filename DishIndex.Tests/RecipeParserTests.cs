@@ -30,6 +30,43 @@ public class RecipeParserTests
 
 	private static readonly IList<string> RecipeWithTipsLines = [.. RecipeNoTipsLines, .. TipsLines];
 
+	[Fact]
+	public void GetRecipeLines_Separators_Test()
+	{
+		string text = "A\nB\nC";
+		string[] result = RecipeParser.GetRecipeLines(text);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(["A", "B", "C"], result);
+
+		text = "A\rB\rC";
+		result = RecipeParser.GetRecipeLines(text);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(["A", "B", "C"], result);
+
+		text = "A\r\nB\r\nC";
+		result = RecipeParser.GetRecipeLines(text);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(["A", "B", "C"], result);
+	}
+
+	[Fact]
+	public void GetRecipeLines_EmptyLines_Test()
+	{
+		string text = "\n\n\nA\n\nB\nC\n\n\n\n";
+		string[] result = RecipeParser.GetRecipeLines(text);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(["A", "B", "C"], result);
+	}
+
+	[Fact]
+	public void GetRecipeLines_WhitespacePadding_Test()
+	{
+		string text = "   \n  A\n\n B \nC   ";
+		string[] result = RecipeParser.GetRecipeLines(text);
+		Assert.Equal(3, result.Length);
+		Assert.Equal(["A", "B", "C"], result);
+	}
+
 	private void TestGetSection(IEnumerable<string> result, int expectedCount, int expectedFirst, int expectedLast)
 	{
 		Assert.Equal(expectedCount, result.Count());
