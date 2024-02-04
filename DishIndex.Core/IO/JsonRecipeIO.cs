@@ -2,7 +2,6 @@
 using DishIndex.Models;
 using S = System.Text.Json;
 using N = Newtonsoft.Json;
-using System.Text.Json;
 
 namespace DishIndex.Core.Generators;
 
@@ -60,6 +59,7 @@ public class NewtonsoftJsonSerializer : IJsonSerializer
 	{
 		_jsonSerializer = new N.JsonSerializer();
 		_jsonSerializer.NullValueHandling = N.NullValueHandling.Ignore;
+		_jsonSerializer.Formatting = N.Formatting.Indented;
 	}
 	public T Deserialize<T>(string json)
 	{
