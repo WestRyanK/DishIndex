@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 
 namespace DishIndex.Models;
 
-
 public class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 {
 	public VolumeQuantity() { }
@@ -16,6 +15,18 @@ public class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 	}
 
 	public override double UnitQuantity(VolumeUnit unit) => unit.Milliliters();
+
+	public override bool Equals(object? obj)
+	{
+		if (obj is not VolumeQuantity other)
+		{
+			return false;
+		}
+
+		return
+			this.Unit == other.Unit &&
+			this.Scalar == other.Scalar;
+	}
 }
 
 public enum VolumeUnit

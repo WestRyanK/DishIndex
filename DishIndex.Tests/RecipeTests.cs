@@ -2,7 +2,7 @@
 
 namespace DishIndex.Tests;
 
-public class RecipeTests
+public class RecipeTests_Constructor
 {
 	[Fact]
 	public void InstructionStepConstructor_Test()
@@ -180,5 +180,161 @@ public class RecipeTests
 		Assert.Equal(1, recipe.IngredientsGroups.Count);
 		Assert.Null(recipe.InstructionsGroups[0].GroupName);
 		Assert.Empty(recipe.Tips);
+	}
+}
+
+public class RecipeTests_Equality
+{
+	[Fact]
+	public void VolumeQuantityEquality_Test()
+	{
+		Assert.False(new VolumeQuantity(0, VolumeUnit.None).Equals(null));
+		Assert.False(new VolumeQuantity(0, VolumeUnit.None).Equals(new object()));
+		Assert.False(new VolumeQuantity(3, VolumeUnit.None).Equals(new VolumeQuantity(3, VolumeUnit.Milliliter)));
+		Assert.False(new VolumeQuantity(3, VolumeUnit.None).Equals(new VolumeQuantity(7, VolumeUnit.None)));
+		Assert.True(new VolumeQuantity(5, VolumeUnit.PintUS).Equals(new VolumeQuantity(5, VolumeUnit.PintUS)));
+		Assert.True(new VolumeQuantity(0, VolumeUnit.None).Equals(new VolumeQuantity(0, VolumeUnit.None)));
+		Assert.False(new VolumeQuantity(1, VolumeUnit.TablespoonUS).Equals(new VolumeQuantity(3, VolumeUnit.TeaspoonUS)), "Equivalent but differently expressed quantities should still be considered different.");
+	}
+
+	[Fact]
+	public void IngredientEquality_Test()
+	{
+		Ingredient ingredient = new("A", new(0, VolumeUnit.None), "B");
+		Ingredient ingredientNullQuantity = new("A", null, "B");
+
+		Assert.False(ingredient.Equals(null));
+		Assert.False(ingredient.Equals(new object()));
+		Assert.False(ingredient.Equals(new Ingredient("A2", new(0, VolumeUnit.None), "B")));
+		Assert.False(ingredient.Equals(new Ingredient("A", new(0, VolumeUnit.None), "B2")));
+		Assert.False(ingredient.Equals(new Ingredient("A", new(1, VolumeUnit.None), "B")));
+		Assert.False(ingredientNullQuantity.Equals(new Ingredient("A", new(0, VolumeUnit.None), "B")));
+		Assert.False(ingredient.Equals(new Ingredient("A", null, "B")));
+		Assert.True(ingredientNullQuantity.Equals(new Ingredient("A", null, "B")));
+		Assert.True(ingredient.Equals(new Ingredient("A", new(0, VolumeUnit.None), "B")));
+	}
+
+	[Fact]
+	public void IngredientsGroupEquality_Test()
+	{
+		IngredientsGroup group = new("A", [
+			new("B", null),
+			new("C", null),
+		]);
+		IngredientsGroup groupEmpty = new("A", []);
+		IngredientsGroup groupNullIngredients = new("A", null);
+		IngredientsGroup groupNullName = new(null, null);
+
+
+		Assert.False(group.Equals(null));
+		Assert.False(group.Equals(new object()));
+		Assert.False(group.Equals(new IngredientsGroup("D", group.Ingredients)));
+		Assert.False(group.Equals(new IngredientsGroup("D", [group.Ingredients[0], group.Ingredients[1]])));
+		Assert.False(group.Equals(new IngredientsGroup("A", null)));
+		Assert.False(group.Equals(new IngredientsGroup("A", [new("F", null)])));
+		Assert.False(groupEmpty.Equals(group));
+		Assert.False(groupNullIngredients.Equals(group));
+		Assert.False(groupNullName.Equals(group));
+		Assert.True(group.Equals(new IngredientsGroup("A", [new("B", null), new("C", null)])));
+		Assert.True(groupEmpty.Equals(new IngredientsGroup("A", [])));
+		Assert.True(groupNullIngredients.Equals(new IngredientsGroup("A", null)));
+		Assert.True(groupNullName.Equals(new IngredientsGroup(null, null)));
+	}
+
+	[Fact]
+	public void InstructionStepEquality_Test()
+	{
+		InstructionStep step = new InstructionStep("A");
+
+		Assert.False(step.Equals(null));
+		Assert.False(step.Equals(new object()));
+		Assert.False(step.Equals(new InstructionStep("B")));
+		Assert.True(step.Equals(new InstructionStep("A")));
+	}
+
+	[Fact]
+	public void InstructionsGroupEquality_Test()
+	{
+		InstructionsGroup group = new("A", [
+			new InstructionStep("B"),
+			new InstructionStep("C"),
+		]);
+		InstructionsGroup groupEmpty = new("A", []);
+		InstructionsGroup groupNullIngredients = new("A", null);
+		InstructionsGroup groupNullName = new(null, null);
+
+
+		Assert.False(group.Equals(null));
+		Assert.False(group.Equals(new object()));
+		Assert.False(group.Equals(new InstructionsGroup("D", group.Steps)));
+		Assert.False(group.Equals(new InstructionsGroup("D", [group.Steps[0], group.Steps[1]])));
+		Assert.False(group.Equals(new InstructionsGroup("A", null)));
+		Assert.False(group.Equals(new InstructionsGroup("A", [new("F")])));
+		Assert.False(groupEmpty.Equals(group));
+		Assert.False(groupNullIngredients.Equals(group));
+		Assert.False(groupNullName.Equals(group));
+		Assert.True(group.Equals(new InstructionsGroup("A", [new("B"), new("C")])));
+		Assert.True(groupEmpty.Equals(new InstructionsGroup("A", [])));
+		Assert.True(groupNullIngredients.Equals(new InstructionsGroup("A", null)));
+		Assert.True(groupNullName.Equals(new InstructionsGroup(null, null)));
+	}
+
+	[Fact]
+	public void RecipeEquality_Test()
+	{
+		Recipe recipe = new Recipe("A",
+			ingredientsGroups: [
+				new IngredientsGroup("B", [
+					new Ingredient("C", null)
+				]),
+				new IngredientsGroup("D", [
+					new Ingredient("E", null)
+				])
+			],
+			instructionsGroups: [
+				new InstructionsGroup("F", [
+					new InstructionStep("G"),
+					new InstructionStep("H"),
+				]),
+				new InstructionsGroup("I", [
+					new InstructionStep("J"),
+					new InstructionStep("K"),
+				])
+			],
+			tips: [
+				"L"
+			]);
+
+		Assert.False(recipe.Equals(null));
+		Assert.False(recipe.Equals(new object()));
+		Assert.False(recipe.Equals(new Recipe("A2", recipe.IngredientsGroups, recipe.InstructionsGroups, recipe.Tips)));
+		Assert.False(recipe.Equals(new Recipe("A", [], recipe.InstructionsGroups, recipe.Tips)));
+		Assert.False(recipe.Equals(new Recipe("A", recipe.IngredientsGroups, [], recipe.Tips)));
+		Assert.False(recipe.Equals(new Recipe("A", recipe.IngredientsGroups, recipe.InstructionsGroups, null)));
+		Assert.False(new Recipe("A", [], recipe.InstructionsGroups, recipe.Tips).Equals(recipe));
+		Assert.False(new Recipe("A", recipe.IngredientsGroups, [], recipe.Tips).Equals(recipe));
+		Assert.False(new Recipe("A", recipe.IngredientsGroups, recipe.InstructionsGroups, null).Equals(recipe));
+		Assert.True(recipe.Equals(new Recipe("A",
+			ingredientsGroups: [
+				new IngredientsGroup("B", [
+					new Ingredient("C", null)
+				]),
+				new IngredientsGroup("D", [
+					new Ingredient("E", null)
+				])
+			],
+			instructionsGroups: [
+				new InstructionsGroup("F", [
+					new InstructionStep("G"),
+					new InstructionStep("H"),
+				]),
+				new InstructionsGroup("I", [
+					new InstructionStep("J"),
+					new InstructionStep("K"),
+				])
+			],
+			tips: [
+				"L"
+			])));
 	}
 }

@@ -31,4 +31,24 @@ internal static class EnumerableUtilities
 		}
 		return -1;
 	}
+
+	public static bool AllEqual<T>(this IEnumerable<T>? values, IEnumerable<T>? otherValues)
+	{
+
+		if (values == null && otherValues == null)
+		{
+			return true;
+		}
+		if (values == null || otherValues == null)
+		{
+			return false;
+		}
+
+		if (values.Count() != otherValues.Count())
+		{
+			return false;
+		}
+
+		return values.Zip(otherValues).All(pair => pair.First == null && pair.Second == null || pair.First != null && pair.First.Equals(pair.Second));
+	}
 }
