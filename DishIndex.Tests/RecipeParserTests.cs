@@ -104,6 +104,27 @@ public class RecipeParserTests
 	}
 
 	[Fact]
+	public void GetRecipeSections_CapitalizedNames_Test()
+	{
+		IList<string> alternateRecipeLines = RecipeWithTipsLines.ToList();
+		alternateRecipeLines[3] = alternateRecipeLines[3].ToUpper();
+		alternateRecipeLines[8] = alternateRecipeLines[8].ToUpper();
+		alternateRecipeLines[11] = alternateRecipeLines[11].ToUpper();
+
+		RecipeParser.GetRecipeSections(
+			alternateRecipeLines,
+			out string recipeName,
+			out IEnumerable<string> ingredientsSection,
+			out IEnumerable<string> instructionsSection,
+			out IEnumerable<string>? tipsSection);
+
+		Assert.Equal(alternateRecipeLines[0], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 3, 7, alternateRecipeLines);
+		TestRecipeSection(instructionsSection, 3, 8, 10, alternateRecipeLines);
+		TestRecipeSection(tipsSection!, 4, 11, 14, alternateRecipeLines);
+	}
+
+	[Fact]
 	public void ParseInstructionsSection_Test()
 	{
 		InstructionsGroup group = RecipeParser.ParseInstructionsGroup(RecipeNoTipsLines.Skip(8));

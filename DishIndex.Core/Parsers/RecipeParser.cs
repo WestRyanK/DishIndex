@@ -1,5 +1,6 @@
 ﻿using DishIndex.Models;
 using DishIndex.Utilities;
+using System.Text.RegularExpressions;
 using System.Linq;
 
 namespace DishIndex.Parsers;
@@ -66,24 +67,26 @@ internal class RecipeParser
 	{
 		recipeName = recipeLines[0];
 
-		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > 0 && IngredientHeaders.Any(h => line.Contains(h)));
+		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > 0 && IsHeader(IngredientHeaders, line));
 		if (ingredientsStartIndex < 0)
 		{
 			throw new FormatException($"Recipe missing '{IngredientHeaders[0]}' header.");
 		}
 
-		int instructionsStartIndex = recipeLines.IndexOf((i, line) => i > ingredientsStartIndex && InstructionHeaders.Any(h => line.Contains(h)));
+		int instructionsStartIndex = recipeLines.IndexOf((i, line) => i > ingredientsStartIndex && IsHeader(InstructionHeaders, line));
 		if (instructionsStartIndex < 0)
 		{
 			throw new FormatException($"Recipe missing '{InstructionHeaders[0]}' header.");
 		}
 
-		int tipsStartIndex = recipeLines.IndexOf((i, line) => i > instructionsStartIndex && TipHeaders.Any(h => line.Contains(h)));
+		int tipsStartIndex = recipeLines.IndexOf((i, line) => i > instructionsStartIndex && IsHeader(TipHeaders, line));
 
 		ingredientsSection = GetSection(recipeLines, ingredientsStartIndex, instructionsStartIndex);
 		instructionsSection = GetSection(recipeLines, instructionsStartIndex, tipsStartIndex > 0 ? tipsStartIndex : recipeLines.Count);
 		tipsSection = (tipsStartIndex > 0) ? GetSection(recipeLines, tipsStartIndex, recipeLines.Count) : null;
 	}
+
+	internal static bool IsHeader(string[] regexes, string line) => regexes.Any(r => Regex.IsMatch(line, r, RegexOptions.IgnoreCase));
 
 	internal static IEnumerable<string> GetSection(IList<string> recipeLines, int startIndex, int endIndex)
 	{
