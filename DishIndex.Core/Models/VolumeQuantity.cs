@@ -1,8 +1,7 @@
-﻿using DishIndex.Utilities;
+﻿using DishIndex.Core.Utilities;
 using System.Collections.Concurrent;
-using System.Runtime.CompilerServices;
 
-namespace DishIndex.Models;
+namespace DishIndex.Core.Models;
 
 public class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 {

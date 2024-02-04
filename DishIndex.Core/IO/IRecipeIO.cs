@@ -1,4 +1,4 @@
-﻿using DishIndex.Models;
+﻿using DishIndex.Core.Models;
 
 namespace DishIndex.Core.Generators;
 

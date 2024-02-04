@@ -1,5 +1,5 @@
 ﻿using DishIndex.Core.Generators;
-using DishIndex.Models;
+using DishIndex.Core.Models;
 
 namespace DishIndex.Tests;
 public class IOTests

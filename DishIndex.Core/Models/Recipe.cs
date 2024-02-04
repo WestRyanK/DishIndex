@@ -1,8 +1,8 @@
-﻿using DishIndex.Utilities;
+﻿using DishIndex.Core.Utilities;
 using S = System.Text.Json.Serialization;
 using N = Newtonsoft.Json;
 
-namespace DishIndex.Models;
+namespace DishIndex.Core.Models;
 
 public class Recipe
 {

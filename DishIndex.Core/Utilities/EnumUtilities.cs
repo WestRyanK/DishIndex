@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace DishIndex.Utilities;
+namespace DishIndex.Core.Utilities;
 
 internal static class EnumUtilities
 {

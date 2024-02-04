@@ -1,4 +1,4 @@
-﻿namespace DishIndex.Utilities;
+﻿namespace DishIndex.Core.Utilities;
 
 internal static class EnumerableUtilities
 {

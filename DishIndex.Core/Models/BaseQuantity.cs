@@ -1,7 +1,7 @@
 ﻿using S = System.Text.Json.Serialization;
 using N = Newtonsoft.Json;
 
-namespace DishIndex.Models;
+namespace DishIndex.Core.Models;
 
 public enum SystemOfMeasurement
 {

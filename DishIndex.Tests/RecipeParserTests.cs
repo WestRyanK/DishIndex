@@ -1,6 +1,5 @@
-﻿using DishIndex.Models;
+﻿using DishIndex.Core.Models;
 using DishIndex.Parsers;
-using System.Runtime.CompilerServices;
 
 namespace DishIndex.Tests;
 

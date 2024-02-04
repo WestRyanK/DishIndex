@@ -1,4 +1,4 @@
-﻿using DishIndex.Utilities;
+﻿using DishIndex.Core.Utilities;
 
 namespace DishIndex.Tests;
 
