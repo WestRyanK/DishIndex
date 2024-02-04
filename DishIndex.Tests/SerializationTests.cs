@@ -1,24 +1,13 @@
 ﻿using DishIndex.Models;
-using System.Text.Json;
+using S = System.Text.Json;
+using N = Newtonsoft.Json;
+using DishIndex.Core.Generators;
 
 namespace DishIndex.Tests;
 
 public class SerializationTests
 {
-	private static readonly JsonSerializerOptions _SerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.General)
-	{
-		WriteIndented = true,
-	};
-
-	private string Serialize(object obj)
-	{
-		return JsonSerializer.Serialize(obj, _SerializerOptions);
-	}
-
-	private T Deserialize<T>(string json)
-	{
-		return JsonSerializer.Deserialize<T>(json)!;
-	}
+	IJsonSerializer _serializer = new NewtonsoftJsonSerializer();
 
 	[Fact]
 	public void RecipeSerialization_Test()
@@ -52,8 +41,8 @@ public class SerializationTests
 				RecipeData.TipBanana
 			]);
 
-		string serialized = Serialize(recipe);
-		Recipe back = Deserialize<Recipe>(serialized);
+		string serialized = _serializer.Serialize(recipe);
+		Recipe back = _serializer.Deserialize<Recipe>(serialized);
 
 		Assert.Equal(RecipeData.RecipeName, back.Name);
 		Assert.Equal(2, back.IngredientsGroups.Count);
@@ -74,29 +63,29 @@ public class SerializationTests
 	[Fact]
 	public void VolumeQuantityUnitSerialization_Test()
 	{
-		string serialized = Serialize(RecipeData.QuantityJelly);
+		string serialized = _serializer.Serialize(RecipeData.QuantityJelly);
 		Assert.Contains(RecipeData.QuantityJelly.Unit.ToString(), serialized);
 	}
 
 	[Fact]
 	public void VolumeQuantitySerialization_Test()
 	{
-		string serialized = Serialize(RecipeData.QuantityJelly);
-		VolumeQuantity back = Deserialize<VolumeQuantity>(serialized)!;
+		string serialized = _serializer.Serialize(RecipeData.QuantityJelly);
+		VolumeQuantity back = _serializer.Deserialize<VolumeQuantity>(serialized)!;
 
 		Assert.Equal(RecipeData.QuantityJelly.Scalar, back.Scalar);
 		Assert.Equal(RecipeData.QuantityJelly.Unit, back.Unit);
 
 
-		serialized = Serialize(RecipeData.QuantityPeanutButter);
-		back = Deserialize<VolumeQuantity>(serialized)!;
+		serialized = _serializer.Serialize(RecipeData.QuantityPeanutButter);
+		back = _serializer.Deserialize<VolumeQuantity>(serialized)!;
 
 		Assert.Equal(RecipeData.QuantityPeanutButter.Scalar, back.Scalar);
 		Assert.Equal(RecipeData.QuantityPeanutButter.Unit, back.Unit);
 
 
-		serialized = Serialize(RecipeData.QuantityBread);
-		back = Deserialize<VolumeQuantity>(serialized)!;
+		serialized = _serializer.Serialize(RecipeData.QuantityBread);
+		back = _serializer.Deserialize<VolumeQuantity>(serialized)!;
 
 		Assert.Equal(RecipeData.QuantityBread.Scalar, back.Scalar);
 		Assert.Equal(RecipeData.QuantityBread.Unit, back.Unit);
@@ -105,8 +94,8 @@ public class SerializationTests
 	[Fact]
 	public void IngredientSerialization_Test()
 	{
-		string serialized = Serialize(RecipeData.IngredientPeanutButter);
-		Ingredient back = Deserialize<Ingredient>(serialized)!;
+		string serialized = _serializer.Serialize(RecipeData.IngredientPeanutButter);
+		Ingredient back = _serializer.Deserialize<Ingredient>(serialized)!;
 
 		Assert.Equal(RecipeData.IngredientPeanutButter.Name, back.Name);
 		Assert.Equal(RecipeData.IngredientPeanutButter.Instruction, back.Instruction);
@@ -116,8 +105,8 @@ public class SerializationTests
 	[Fact]
 	public void IngredientSerialization_NoInstruction_Test()
 	{
-		string serialized = Serialize(RecipeData.IngredientJelly);
-		Ingredient back = Deserialize<Ingredient>(serialized)!;
+		string serialized = _serializer.Serialize(RecipeData.IngredientJelly);
+		Ingredient back = _serializer.Deserialize<Ingredient>(serialized)!;
 
 		Assert.Equal(RecipeData.IngredientJelly.Name, back.Name);
 		Assert.DoesNotContain(nameof(Ingredient.Instruction), serialized);
@@ -127,8 +116,8 @@ public class SerializationTests
 	[Fact]
 	public void InstructionsSerialization_Test()
 	{
-		string serialized = Serialize(RecipeData.InstructionEasy);
-		InstructionStep back = Deserialize<InstructionStep>(serialized)!;
+		string serialized = _serializer.Serialize(RecipeData.InstructionEasy);
+		InstructionStep back = _serializer.Deserialize<InstructionStep>(serialized)!;
 
 		Assert.Equal(RecipeData.InstructionEasy.Instructions, back.Instructions);
 	}
@@ -142,8 +131,8 @@ public class SerializationTests
 				RecipeData.IngredientJelly,
 			]);
 
-		string serialized = Serialize(group);
-		IngredientsGroup back = Deserialize<IngredientsGroup>(serialized)!;
+		string serialized = _serializer.Serialize(group);
+		IngredientsGroup back = _serializer.Deserialize<IngredientsGroup>(serialized)!;
 
 		Assert.Equal(group.GroupName, group.GroupName);
 		Assert.Equal(2, group.Ingredients.Count);
@@ -158,8 +147,8 @@ public class SerializationTests
 				RecipeData.IngredientJelly,
 			]);
 
-		string serialized = Serialize(group);
-		IngredientsGroup back = Deserialize<IngredientsGroup>(serialized)!;
+		string serialized = _serializer.Serialize(group);
+		IngredientsGroup back = _serializer.Deserialize<IngredientsGroup>(serialized)!;
 
 		Assert.DoesNotContain(nameof(IngredientsGroup.GroupName), serialized);
 		Assert.Null(group.GroupName);
@@ -177,8 +166,8 @@ public class SerializationTests
 				RecipeData.InstructionJelly,
 			]);
 
-		string serialized = Serialize(group);
-		InstructionsGroup back = Deserialize<InstructionsGroup>(serialized)!;
+		string serialized = _serializer.Serialize(group);
+		InstructionsGroup back = _serializer.Deserialize<InstructionsGroup>(serialized)!;
 
 		Assert.Equal(group.GroupName, group.GroupName);
 		Assert.Equal(3, group.Steps.Count);
@@ -194,8 +183,8 @@ public class SerializationTests
 				RecipeData.InstructionJelly,
 			]);
 
-		string serialized = Serialize(group);
-		InstructionsGroup back = Deserialize<InstructionsGroup>(serialized)!;
+		string serialized = _serializer.Serialize(group);
+		InstructionsGroup back = _serializer.Deserialize<InstructionsGroup>(serialized)!;
 
 		Assert.DoesNotContain(nameof(InstructionsGroup.GroupName), serialized);
 		Assert.Null(group.GroupName);

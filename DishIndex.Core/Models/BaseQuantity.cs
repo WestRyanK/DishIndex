@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using S = System.Text.Json.Serialization;
+using N = Newtonsoft.Json;
 
 namespace DishIndex.Models;
 
@@ -19,7 +15,8 @@ public abstract class BaseQuantity<Q, U>
 	where U : struct, Enum
 {
 	public double Scalar { get; set; }
-	[JsonConverter(typeof(JsonStringEnumConverter))]
+	[S.JsonConverter(typeof(S.JsonStringEnumConverter))]
+	[N.JsonConverter(typeof(N.Converters.StringEnumConverter))]
 	public U Unit { get; set; }
 
 	public Q ConvertTo(U unit)
