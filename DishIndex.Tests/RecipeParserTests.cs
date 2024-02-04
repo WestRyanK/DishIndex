@@ -29,7 +29,6 @@ public class RecipeParserTests
 
 	private static readonly IList<string> RecipeWithTipsLines = [.. RecipeNoTipsLines, .. TipsLines];
 
-
 	private void TestGetSection(IEnumerable<string> result, int expectedCount, int expectedFirst, int expectedLast)
 	{
 		Assert.Equal(expectedCount, result.Count());
@@ -45,11 +44,11 @@ public class RecipeParserTests
 		TestGetSection(RecipeParser.GetSection(input, 1, 5), 4, 1, 4);
 	}
 
-	private void TestRecipeSection(IEnumerable<string> actual, int expectedCount, int expectedFirstIndex, int expectedLastIndex)
+	private void TestRecipeSection(IEnumerable<string> actual, int expectedCount, int expectedFirstIndex, int expectedLastIndex, IList<string> recipe)
 	{
 		Assert.Equal(expectedCount, actual.Count());
-		Assert.Equal(RecipeWithTipsLines[expectedFirstIndex], actual.First());
-		Assert.Equal(RecipeWithTipsLines[expectedLastIndex], actual.Last());
+		Assert.Equal(recipe[expectedFirstIndex], actual.First());
+		Assert.Equal(recipe[expectedLastIndex], actual.Last());
 	}
 
 	[Fact]
@@ -63,9 +62,9 @@ public class RecipeParserTests
 			out IEnumerable<string>? tipsSection);
 
 		Assert.Equal(RecipeWithTipsLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7);
-		TestRecipeSection(instructionsSection, 3, 8, 10);
-		TestRecipeSection(tipsSection!, 4, 11, 14);
+		TestRecipeSection(ingredientsSection, 5, 3, 7, RecipeWithTipsLines);
+		TestRecipeSection(instructionsSection, 3, 8, 10, RecipeWithTipsLines);
+		TestRecipeSection(tipsSection!, 4, 11, 14, RecipeWithTipsLines);
 	}
 
 	[Fact]
@@ -79,9 +78,29 @@ public class RecipeParserTests
 			out IEnumerable<string>? tipsSection);
 
 		Assert.Equal(RecipeWithTipsLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7);
-		TestRecipeSection(instructionsSection, 3, 8, 10);
+		TestRecipeSection(ingredientsSection, 5, 3, 7, RecipeNoTipsLines);
+		TestRecipeSection(instructionsSection, 3, 8, 10, RecipeNoTipsLines);
 		Assert.Null(tipsSection);
+	}
+
+	[Fact]
+	public void GetRecipeSections_AlternateNames_Test()
+	{
+		IList<string> alternateRecipeLines = RecipeWithTipsLines.ToList();
+		alternateRecipeLines[8] = "8: Preparations";
+		alternateRecipeLines[11] = "11: Memories";
+
+		RecipeParser.GetRecipeSections(
+			alternateRecipeLines,
+			out string recipeName,
+			out IEnumerable<string> ingredientsSection,
+			out IEnumerable<string> instructionsSection,
+			out IEnumerable<string>? tipsSection);
+
+		Assert.Equal(alternateRecipeLines[0], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 3, 7, alternateRecipeLines);
+		TestRecipeSection(instructionsSection, 3, 8, 10, alternateRecipeLines);
+		TestRecipeSection(tipsSection!, 4, 11, 14, alternateRecipeLines);
 	}
 
 	[Fact]

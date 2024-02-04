@@ -6,9 +6,9 @@ namespace DishIndex.Parsers;
 
 internal class RecipeParser
 {
-	internal const string IngredientHeader = "Ingredient";
-	internal const string InstructionHeader = "Instruction";
-	internal const string TipHeader = "Tip";
+	internal static readonly string[] IngredientHeaders = ["Ingredient"];
+	internal static readonly string[] InstructionHeaders = ["Instruction", "Preparation"];
+	internal static readonly string[] TipHeaders = ["Tip", "Memories"];
 	public static Recipe Parse(string recipeText)
 	{
 		string[] recipeLines = recipeText.Split(["\r\n", "\r", "\n"], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
@@ -66,23 +66,23 @@ internal class RecipeParser
 	{
 		recipeName = recipeLines[0];
 
-		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > 0 && line.Contains(IngredientHeader));
+		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > 0 && IngredientHeaders.Any(h => line.Contains(h)));
 		if (ingredientsStartIndex < 0)
 		{
-			throw new FormatException($"Recipe missing '{IngredientHeader}' header.");
+			throw new FormatException($"Recipe missing '{IngredientHeaders[0]}' header.");
 		}
 
-		int instructionsStartIndex = recipeLines.IndexOf((i, line) => i > ingredientsStartIndex && line.Contains(InstructionHeader));
+		int instructionsStartIndex = recipeLines.IndexOf((i, line) => i > ingredientsStartIndex && InstructionHeaders.Any(h => line.Contains(h)));
 		if (instructionsStartIndex < 0)
 		{
-			throw new FormatException($"Recipe missing '{InstructionHeader}' header.");
+			throw new FormatException($"Recipe missing '{InstructionHeaders[0]}' header.");
 		}
 
-		int tipsStartIndex = recipeLines.IndexOf((i, line) => i > instructionsStartIndex && line.Contains(TipHeader));
+		int tipsStartIndex = recipeLines.IndexOf((i, line) => i > instructionsStartIndex && TipHeaders.Any(h => line.Contains(h)));
 
 		ingredientsSection = GetSection(recipeLines, ingredientsStartIndex, instructionsStartIndex);
 		instructionsSection = GetSection(recipeLines, instructionsStartIndex, tipsStartIndex > 0 ? tipsStartIndex : recipeLines.Count);
-		tipsSection = (tipsStartIndex > 0) ?  GetSection(recipeLines, tipsStartIndex, recipeLines.Count) : null;
+		tipsSection = (tipsStartIndex > 0) ? GetSection(recipeLines, tipsStartIndex, recipeLines.Count) : null;
 	}
 
 	internal static IEnumerable<string> GetSection(IList<string> recipeLines, int startIndex, int endIndex)
