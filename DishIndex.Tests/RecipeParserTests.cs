@@ -254,4 +254,11 @@ public class RecipeParserTests
 
 		Assert.Equal(0, recipe.Tips.Count);
 	}
+
+	[Fact]
+	public void ParseRecipe_BroccoliWreath_Test()
+	{
+		Recipe recipe = RecipeParser.Parse(RecipeData.RecipeTextBroccoliWreath);
+		Assert.Equal(RecipeData.RecipeBroccoliWreath, recipe);
+	}
 }
