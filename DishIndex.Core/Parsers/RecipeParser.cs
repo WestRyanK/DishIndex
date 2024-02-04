@@ -7,6 +7,7 @@ namespace DishIndex.Parsers;
 
 internal class RecipeParser
 {
+	internal static readonly string[] RecipeHeaders = ["^Recipe$"];
 	internal static readonly string[] IngredientHeaders = ["Ingredient"];
 	internal static readonly string[] InstructionHeaders = ["Instruction", "Preparation"];
 	internal static readonly string[] TipHeaders = ["Tip", "Memories"];
@@ -65,9 +66,10 @@ internal class RecipeParser
 		out IEnumerable<string> instructionsSection,
 		out IEnumerable<string>? tipsSection)
 	{
-		recipeName = recipeLines[0];
+		int recipeNameStartIndex = recipeLines.IndexOf(line => !IsHeader(RecipeHeaders, line));
+		recipeName = recipeLines[recipeNameStartIndex];
 
-		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > 0 && IsHeader(IngredientHeaders, line));
+		int ingredientsStartIndex = recipeLines.IndexOf((i, line) => i > recipeNameStartIndex + 1 && IsHeader(IngredientHeaders, line));
 		if (ingredientsStartIndex < 0)
 		{
 			throw new FormatException($"Recipe missing '{IngredientHeaders[0]}' header.");

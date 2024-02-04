@@ -7,24 +7,25 @@ namespace DishIndex.Tests;
 public class RecipeParserTests
 {
 	private static readonly IList<string> RecipeNoTipsLines = [
-		"0: Recipe Name",
-		"1: Garbage 1",
-		"2: Garbage 2",
-		"3: An Ingredients Title",
-		"4: Ingredient 1",
-		"5: Ingredient 2",
-		"6: Ingredient 3",
-		"7: Ingredient 4",
-		"8: Instructions Start Here",
-		"9: Instruction 1",
-		"10: Instruction 2",
+		"RECIPE",
+		"1: Recipe Name",
+		"2: Garbage 1",
+		"3: Garbage 2",
+		"4: An Ingredients Title",
+		"5: Ingredient 1",
+		"6: Ingredient 2",
+		"7: Ingredient 3",
+		"8: Ingredient 4",
+		"9: Instructions Start Here",
+		"10: Instruction 1",
+		"11: Instruction 2",
 	];
 
 	private static readonly IList<string> TipsLines = [
-		"11: Tips",
-		"12: Tip #1",
-		"13: Tip #2",
-		"14: Tip #3",
+		"12: Tips",
+		"13: Tip #1",
+		"14: Tip #2",
+		"15: Tip #3",
 	];
 
 	private static readonly IList<string> RecipeWithTipsLines = [.. RecipeNoTipsLines, .. TipsLines];
@@ -61,10 +62,10 @@ public class RecipeParserTests
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-		Assert.Equal(RecipeWithTipsLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7, RecipeWithTipsLines);
-		TestRecipeSection(instructionsSection, 3, 8, 10, RecipeWithTipsLines);
-		TestRecipeSection(tipsSection!, 4, 11, 14, RecipeWithTipsLines);
+		Assert.Equal(RecipeWithTipsLines[1], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 4, 8, RecipeWithTipsLines);
+		TestRecipeSection(instructionsSection, 3, 9, 11, RecipeWithTipsLines);
+		TestRecipeSection(tipsSection!, 4, 12, 15, RecipeWithTipsLines);
 	}
 
 	[Fact]
@@ -77,9 +78,9 @@ public class RecipeParserTests
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-		Assert.Equal(RecipeWithTipsLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7, RecipeNoTipsLines);
-		TestRecipeSection(instructionsSection, 3, 8, 10, RecipeNoTipsLines);
+		Assert.Equal(RecipeWithTipsLines[1], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 4, 8, RecipeNoTipsLines);
+		TestRecipeSection(instructionsSection, 3, 9, 11, RecipeNoTipsLines);
 		Assert.Null(tipsSection);
 	}
 
@@ -87,8 +88,8 @@ public class RecipeParserTests
 	public void GetRecipeSections_AlternateNames_Test()
 	{
 		IList<string> alternateRecipeLines = RecipeWithTipsLines.ToList();
-		alternateRecipeLines[8] = "8: Preparations";
-		alternateRecipeLines[11] = "11: Memories";
+		alternateRecipeLines[9] = "9: Preparations";
+		alternateRecipeLines[12] = "12: Memories";
 
 		RecipeParser.GetRecipeSections(
 			alternateRecipeLines,
@@ -97,19 +98,19 @@ public class RecipeParserTests
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-		Assert.Equal(alternateRecipeLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7, alternateRecipeLines);
-		TestRecipeSection(instructionsSection, 3, 8, 10, alternateRecipeLines);
-		TestRecipeSection(tipsSection!, 4, 11, 14, alternateRecipeLines);
+		Assert.Equal(alternateRecipeLines[1], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 4, 8, alternateRecipeLines);
+		TestRecipeSection(instructionsSection, 3, 9, 11, alternateRecipeLines);
+		TestRecipeSection(tipsSection!, 4, 12, 15, alternateRecipeLines);
 	}
 
 	[Fact]
 	public void GetRecipeSections_CapitalizedNames_Test()
 	{
 		IList<string> alternateRecipeLines = RecipeWithTipsLines.ToList();
-		alternateRecipeLines[3] = alternateRecipeLines[3].ToUpper();
-		alternateRecipeLines[8] = alternateRecipeLines[8].ToUpper();
-		alternateRecipeLines[11] = alternateRecipeLines[11].ToUpper();
+		alternateRecipeLines[4] = alternateRecipeLines[4].ToUpper();
+		alternateRecipeLines[9] = alternateRecipeLines[9].ToUpper();
+		alternateRecipeLines[12] = alternateRecipeLines[12].ToUpper();
 
 		RecipeParser.GetRecipeSections(
 			alternateRecipeLines,
@@ -118,33 +119,33 @@ public class RecipeParserTests
 			out IEnumerable<string> instructionsSection,
 			out IEnumerable<string>? tipsSection);
 
-		Assert.Equal(alternateRecipeLines[0], recipeName);
-		TestRecipeSection(ingredientsSection, 5, 3, 7, alternateRecipeLines);
-		TestRecipeSection(instructionsSection, 3, 8, 10, alternateRecipeLines);
-		TestRecipeSection(tipsSection!, 4, 11, 14, alternateRecipeLines);
+		Assert.Equal(alternateRecipeLines[1], recipeName);
+		TestRecipeSection(ingredientsSection, 5, 4, 8, alternateRecipeLines);
+		TestRecipeSection(instructionsSection, 3, 9, 11, alternateRecipeLines);
+		TestRecipeSection(tipsSection!, 4, 12, 15, alternateRecipeLines);
 	}
 
 	[Fact]
 	public void ParseInstructionsSection_Test()
 	{
-		InstructionsGroup group = RecipeParser.ParseInstructionsGroup(RecipeNoTipsLines.Skip(8));
-		Assert.Equal(RecipeNoTipsLines[8], group.GroupName);
+		InstructionsGroup group = RecipeParser.ParseInstructionsGroup(RecipeNoTipsLines.Skip(9));
+		Assert.Equal(RecipeNoTipsLines[9], group.GroupName);
 		Assert.Equal(2, group.Steps.Count);
-		Assert.Equal(RecipeNoTipsLines[9], group.Steps[0].Instructions);
-		Assert.Equal(RecipeNoTipsLines[10], group.Steps[1].Instructions);
+		Assert.Equal(RecipeNoTipsLines[10], group.Steps[0].Instructions);
+		Assert.Equal(RecipeNoTipsLines[11], group.Steps[1].Instructions);
 	}
 
 
 	[Fact]
 	public void ParseIngredientsSection_Test()
 	{
-		IngredientsGroup group = RecipeParser.ParseIngredientsGroup(RecipeNoTipsLines.Skip(3).Take(5));
-		Assert.Equal(RecipeNoTipsLines[3], group.GroupName);
+		IngredientsGroup group = RecipeParser.ParseIngredientsGroup(RecipeNoTipsLines.Skip(4).Take(5));
+		Assert.Equal(RecipeNoTipsLines[4], group.GroupName);
 		Assert.Equal(4, group.Ingredients.Count);
-		Assert.Equal(RecipeNoTipsLines[4], group.Ingredients[0].Name);
-		Assert.Equal(RecipeNoTipsLines[5], group.Ingredients[1].Name);
-		Assert.Equal(RecipeNoTipsLines[6], group.Ingredients[2].Name);
-		Assert.Equal(RecipeNoTipsLines[7], group.Ingredients[3].Name);
+		Assert.Equal(RecipeNoTipsLines[5], group.Ingredients[0].Name);
+		Assert.Equal(RecipeNoTipsLines[6], group.Ingredients[1].Name);
+		Assert.Equal(RecipeNoTipsLines[7], group.Ingredients[2].Name);
+		Assert.Equal(RecipeNoTipsLines[8], group.Ingredients[3].Name);
 	}
 
 	[Fact]
@@ -152,9 +153,9 @@ public class RecipeParserTests
 	{
 		List<string> tips = RecipeParser.ParseTips(TipsLines);
 		Assert.Equal(3, tips.Count);
-		Assert.Equal(RecipeWithTipsLines[12], tips[0]);
-		Assert.Equal(RecipeWithTipsLines[13], tips[1]);
-		Assert.Equal(RecipeWithTipsLines[14], tips[2]);
+		Assert.Equal(RecipeWithTipsLines[13], tips[0]);
+		Assert.Equal(RecipeWithTipsLines[14], tips[1]);
+		Assert.Equal(RecipeWithTipsLines[15], tips[2]);
 	}
 
 	[Fact]
@@ -170,26 +171,26 @@ public class RecipeParserTests
 		string recipeString = string.Join("\n", RecipeWithTipsLines);
 		Recipe recipe = RecipeParser.Parse(recipeString);
 
-		Assert.Equal(RecipeWithTipsLines[0], recipe.Name);
+		Assert.Equal(RecipeWithTipsLines[1], recipe.Name);
 
 		Assert.Equal(1, recipe.IngredientsGroups.Count);
-		Assert.Equal(RecipeWithTipsLines[3], recipe.IngredientsGroups[0].GroupName);
+		Assert.Equal(RecipeWithTipsLines[4], recipe.IngredientsGroups[0].GroupName);
 		Assert.Equal(4, recipe.IngredientsGroups[0].Ingredients.Count);
-		Assert.Equal(RecipeWithTipsLines[4], recipe.IngredientsGroups[0].Ingredients[0].Name);
-		Assert.Equal(RecipeWithTipsLines[5], recipe.IngredientsGroups[0].Ingredients[1].Name);
-		Assert.Equal(RecipeWithTipsLines[6], recipe.IngredientsGroups[0].Ingredients[2].Name);
-		Assert.Equal(RecipeWithTipsLines[7], recipe.IngredientsGroups[0].Ingredients[3].Name);
+		Assert.Equal(RecipeWithTipsLines[5], recipe.IngredientsGroups[0].Ingredients[0].Name);
+		Assert.Equal(RecipeWithTipsLines[6], recipe.IngredientsGroups[0].Ingredients[1].Name);
+		Assert.Equal(RecipeWithTipsLines[7], recipe.IngredientsGroups[0].Ingredients[2].Name);
+		Assert.Equal(RecipeWithTipsLines[8], recipe.IngredientsGroups[0].Ingredients[3].Name);
 
 		Assert.Equal(1, recipe.InstructionsGroups.Count);
-		Assert.Equal(RecipeWithTipsLines[8], recipe.InstructionsGroups[0].GroupName);
+		Assert.Equal(RecipeWithTipsLines[9], recipe.InstructionsGroups[0].GroupName);
 		Assert.Equal(2, recipe.InstructionsGroups[0].Steps.Count);
-		Assert.Equal(RecipeWithTipsLines[9], recipe.InstructionsGroups[0].Steps[0].Instructions);
-		Assert.Equal(RecipeWithTipsLines[10], recipe.InstructionsGroups[0].Steps[1].Instructions);
+		Assert.Equal(RecipeWithTipsLines[10], recipe.InstructionsGroups[0].Steps[0].Instructions);
+		Assert.Equal(RecipeWithTipsLines[11], recipe.InstructionsGroups[0].Steps[1].Instructions);
 
 		Assert.Equal(3, recipe.Tips.Count);
-		Assert.Equal(RecipeWithTipsLines[12], recipe.Tips[0]);
-		Assert.Equal(RecipeWithTipsLines[13], recipe.Tips[1]);
-		Assert.Equal(RecipeWithTipsLines[14], recipe.Tips[2]);
+		Assert.Equal(RecipeWithTipsLines[13], recipe.Tips[0]);
+		Assert.Equal(RecipeWithTipsLines[14], recipe.Tips[1]);
+		Assert.Equal(RecipeWithTipsLines[15], recipe.Tips[2]);
 	}
 
 	[Fact]
@@ -198,21 +199,21 @@ public class RecipeParserTests
 		string recipeString = string.Join("\n", RecipeNoTipsLines);
 		Recipe recipe = RecipeParser.Parse(recipeString);
 
-		Assert.Equal(RecipeWithTipsLines[0], recipe.Name);
+		Assert.Equal(RecipeWithTipsLines[1], recipe.Name);
 
 		Assert.Equal(1, recipe.IngredientsGroups.Count);
-		Assert.Equal(RecipeWithTipsLines[3], recipe.IngredientsGroups[0].GroupName);
+		Assert.Equal(RecipeWithTipsLines[4], recipe.IngredientsGroups[0].GroupName);
 		Assert.Equal(4, recipe.IngredientsGroups[0].Ingredients.Count);
-		Assert.Equal(RecipeWithTipsLines[4], recipe.IngredientsGroups[0].Ingredients[0].Name);
-		Assert.Equal(RecipeWithTipsLines[5], recipe.IngredientsGroups[0].Ingredients[1].Name);
-		Assert.Equal(RecipeWithTipsLines[6], recipe.IngredientsGroups[0].Ingredients[2].Name);
-		Assert.Equal(RecipeWithTipsLines[7], recipe.IngredientsGroups[0].Ingredients[3].Name);
+		Assert.Equal(RecipeWithTipsLines[5], recipe.IngredientsGroups[0].Ingredients[0].Name);
+		Assert.Equal(RecipeWithTipsLines[6], recipe.IngredientsGroups[0].Ingredients[1].Name);
+		Assert.Equal(RecipeWithTipsLines[7], recipe.IngredientsGroups[0].Ingredients[2].Name);
+		Assert.Equal(RecipeWithTipsLines[8], recipe.IngredientsGroups[0].Ingredients[3].Name);
 
 		Assert.Equal(1, recipe.InstructionsGroups.Count);
-		Assert.Equal(RecipeWithTipsLines[8], recipe.InstructionsGroups[0].GroupName);
+		Assert.Equal(RecipeWithTipsLines[9], recipe.InstructionsGroups[0].GroupName);
 		Assert.Equal(2, recipe.InstructionsGroups[0].Steps.Count);
-		Assert.Equal(RecipeWithTipsLines[9], recipe.InstructionsGroups[0].Steps[0].Instructions);
-		Assert.Equal(RecipeWithTipsLines[10], recipe.InstructionsGroups[0].Steps[1].Instructions);
+		Assert.Equal(RecipeWithTipsLines[10], recipe.InstructionsGroups[0].Steps[0].Instructions);
+		Assert.Equal(RecipeWithTipsLines[11], recipe.InstructionsGroups[0].Steps[1].Instructions);
 
 		Assert.Equal(0, recipe.Tips.Count);
 	}
