@@ -2,7 +2,7 @@
 
 namespace DishIndex.Models;
 
-internal class Recipe
+public class Recipe
 {
     private string _name;
     public string Name
@@ -50,7 +50,7 @@ internal class Recipe
     }
 }
 
-internal class InstructionsGroup
+public class InstructionsGroup
 {
     private string? _groupName;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -75,7 +75,7 @@ internal class InstructionsGroup
     }
 }
 
-internal class InstructionStep
+public class InstructionStep
 {
     private string _instructions;
     public string Instructions
@@ -91,7 +91,7 @@ internal class InstructionStep
     }
 }
 
-internal class IngredientsGroup
+public class IngredientsGroup
 {
     private string? _groupName;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -116,7 +116,7 @@ internal class IngredientsGroup
     }
 }
 
-internal class Ingredient
+public class Ingredient
 {
     private VolumeQuantity? _quantity;
 

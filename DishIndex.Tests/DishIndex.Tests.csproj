@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DishIndex\DishIndex.csproj" />
+    <ProjectReference Include="..\DishIndex.Core\DishIndex.Core.csproj" />
   </ItemGroup>
 
 </Project>

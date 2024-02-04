@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace DishIndex.Models;
 
 
-internal class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
+public class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 {
 	public VolumeQuantity() { }
 
@@ -18,7 +18,7 @@ internal class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 	public override double UnitQuantity(VolumeUnit unit) => unit.Milliliters();
 }
 
-internal enum VolumeUnit
+public enum VolumeUnit
 {
 	[VolumeUnit(0, SystemOfMeasurement.None)]
 	None,

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DishIndex.Models;
 
-internal enum SystemOfMeasurement
+public enum SystemOfMeasurement
 {
 	None,
 	Metric,
 	US
 }
 
-internal abstract class BaseQuantity<Q, U>
+public abstract class BaseQuantity<Q, U>
 	where Q : BaseQuantity<Q, U>, new()
 	where U : struct, Enum
 {
