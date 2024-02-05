@@ -1,12 +1,16 @@
 ﻿using DishIndex.Core.Utilities;
 using S = System.Text.Json.Serialization;
 using N = Newtonsoft.Json;
+using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace DishIndex.Core.Models;
 
+[Description("Defines a recipe, including its ingredients, preparation steps, helpful tips, or memories associated with the recipe.")]
 public class Recipe
 {
 	private string _name;
+	[Description("Title of the recipe.")]
 	public string Name
 	{
 		get => _name;
@@ -14,6 +18,7 @@ public class Recipe
 	}
 
 	private List<IngredientsGroup> _ingredientsGroups = new();
+	[Description("Categorizes ingredients into groups for complex recipes. For simple recipes, there is a single group.")]
 	public List<IngredientsGroup> IngredientsGroups
 	{
 		get => _ingredientsGroups;
@@ -21,6 +26,7 @@ public class Recipe
 	}
 
 	private List<InstructionsGroup> _instructionsGroups = new();
+	[Description("Categorizes instructions into groups for complex recipes. For simple recipes, there is a single group.")]
 	public List<InstructionsGroup> InstructionsGroups
 	{
 		get => _instructionsGroups;
@@ -28,11 +34,13 @@ public class Recipe
 	}
 
 	private List<string> _tips = new();
+	[Description("Offers additional advice, serving suggestions, or variations.")]
 	public List<string> Tips
 	{
 		get => _tips;
 		set => _tips = value;
 	}
+
 
 	[S.JsonConstructor]
 	[N.JsonConstructor]
@@ -67,10 +75,12 @@ public class Recipe
 	}
 }
 
+[Description("Organizes instructions into groups by recipe component, such as 'filling' or 'sauce'.")]
 public class InstructionsGroup
 {
 	private string? _groupName;
 	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
+	[Description("Labels the instruction group, named after the component it makes. If there's just one group, it's named 'Instructions'.")]
 	public string? GroupName
 	{
 		get => _groupName;
@@ -78,6 +88,7 @@ public class InstructionsGroup
 	}
 
 	private List<InstructionStep> _steps = new();
+	[Description("Lists steps within this group.")]
 	public List<InstructionStep> Steps
 	{
 		get => _steps;
@@ -105,9 +116,11 @@ public class InstructionsGroup
 	}
 }
 
+[Description("Describes a single preparation step.")]
 public class InstructionStep
 {
 	private string _instructions;
+	[Description("Outlines the action to be taken.")]
 	public string Instructions
 	{
 		get => _instructions;
@@ -132,10 +145,12 @@ public class InstructionStep
 	}
 }
 
+[Description("Groups ingredients by recipe component, such as 'filling' or 'sauce'.")]
 public class IngredientsGroup
 {
 	private string? _groupName;
 	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
+	[Description("Labels the ingredient group, named after the component it makes. If there's just one group, it's named 'Ingredients'.")]
 	public string? GroupName
 	{
 		get => _groupName;
@@ -143,6 +158,7 @@ public class IngredientsGroup
 	}
 
 	private List<Ingredient> _ingredients = new();
+	[Description("Lists ingredients in this group.")]
 	public List<Ingredient> Ingredients
 	{
 		get => _ingredients;
@@ -169,11 +185,12 @@ public class IngredientsGroup
 			this.Ingredients.AllEqual(other.Ingredients);
 	}
 }
-
+[Description("Details an ingredient including its name, required amount, and preparation instructions.")]
 public class Ingredient
 {
 	private VolumeQuantity? _quantity;
 
+	[Description("Specifies ingredient quantity in a chosen unit.")]
 	public VolumeQuantity? Quantity
 	{
 		get { return _quantity; }
@@ -181,6 +198,7 @@ public class Ingredient
 	}
 
 	private string _name;
+	[Description("Identifies the ingredient.")]
 	public string Name
 	{
 		get => _name;
@@ -189,6 +207,7 @@ public class Ingredient
 
 	private string? _instruction;
 	[S.JsonIgnore(Condition = S.JsonIgnoreCondition.WhenWritingNull)]
+	[Description("Preparation instructions for the ingredient.")]
 	public string? Instruction
 	{
 		get => _instruction;

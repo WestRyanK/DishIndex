@@ -1,5 +1,7 @@
 ﻿using S = System.Text.Json.Serialization;
 using N = Newtonsoft.Json;
+using Newtonsoft.Json.Schema.Generation;
+using System.ComponentModel;
 
 namespace DishIndex.Core.Models;
 
@@ -10,11 +12,14 @@ public enum SystemOfMeasurement
 	US
 }
 
+[Description("Specifies ingredient quantity in a chosen unit.")]
 public abstract class BaseQuantity<Q, U>
 	where Q : BaseQuantity<Q, U>, new()
 	where U : struct, Enum
 {
+	[Description("Numerical value of the quantity.")]
 	public double Scalar { get; set; }
+	[Description("Measurement unit for the quantity.")]
 	[S.JsonConverter(typeof(S.JsonStringEnumConverter))]
 	[N.JsonConverter(typeof(N.Converters.StringEnumConverter))]
 	public U Unit { get; set; }

@@ -51,4 +51,12 @@ public class NewtonsoftJsonSerializer : IJsonSerializer
 		_jsonSerializer.Serialize(writer, obj);
 		return writer.ToString();
 	}
+
+	public static string GetSchema<T>()
+	{
+		N.Schema.Generation.JSchemaGenerator generator = new();
+		generator.GenerationProviders.Add(new N.Schema.Generation.StringEnumGenerationProvider());
+		N.Schema.JSchema schema = generator.Generate(typeof(T));
+		return schema.ToString();
+	}
 }
