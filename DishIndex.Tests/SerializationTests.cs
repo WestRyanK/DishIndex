@@ -197,6 +197,7 @@ public class SerializationTests
 	public void SchemaEnum_Test()
 	{
 		string schema = NewtonsoftJsonSerializer.GetSchema<VolumeUnit>();
-		string schemaRecipe = NewtonsoftJsonSerializer.GetSchema<Recipe>();
+		Assert.Contains("\"type\": \"string\"", schema); // Enum values must be serialized as a string, not integer
+		Assert.DoesNotContain("\"type\": \"integer\"", schema);
 	}
 }
