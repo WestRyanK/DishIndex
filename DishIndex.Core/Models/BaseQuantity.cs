@@ -12,14 +12,14 @@ public enum SystemOfMeasurement
 	US
 }
 
-[Description("The amount of an ingredient specified as a scalar number and a unit of measurement.")]
+[Description("Specifies ingredient quantity in a chosen unit.")]
 public abstract class BaseQuantity<Q, U>
 	where Q : BaseQuantity<Q, U>, new()
 	where U : struct, Enum
 {
-	[Description("The number amount of an ingredient without the unit of measurement.")]
+	[Description("Numerical value of the quantity.")]
 	public double Scalar { get; set; }
-	[Description("The unit of measurement used to measure the quantity of an ingredient.")]
+	[Description("Measurement unit for the quantity.")]
 	[S.JsonConverter(typeof(S.JsonStringEnumConverter))]
 	[N.JsonConverter(typeof(N.Converters.StringEnumConverter))]
 	public U Unit { get; set; }
