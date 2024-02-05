@@ -192,4 +192,11 @@ public class SerializationTests
 		Assert.Equal(3, group.Steps.Count);
 		Assert.Equal(group.Steps[0].Instructions, group.Steps[0].Instructions);
 	}
+
+	[Fact]
+	public void SchemaEnum_Test()
+	{
+		string schema = NewtonsoftJsonSerializer.GetSchema<VolumeUnit>();
+		string schemaRecipe = NewtonsoftJsonSerializer.GetSchema<Recipe>();
+	}
 }

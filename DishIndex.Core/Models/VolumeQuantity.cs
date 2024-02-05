@@ -1,5 +1,6 @@
 ﻿using DishIndex.Core.Utilities;
 using System.Collections.Concurrent;
+using System.ComponentModel;
 
 namespace DishIndex.Core.Models;
 
@@ -28,6 +29,7 @@ public class VolumeQuantity : BaseQuantity<VolumeQuantity, VolumeUnit>
 	}
 }
 
+[Description("The unit of measurement for a quantity of volume.")]
 public enum VolumeUnit
 {
 	[VolumeUnit(0, SystemOfMeasurement.None)]
